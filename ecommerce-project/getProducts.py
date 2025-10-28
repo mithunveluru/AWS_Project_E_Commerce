@@ -14,7 +14,7 @@ class DecimalEncoder(json.JSONEncoder):
 
 def lambda_handler(event, context):
     try:
-        response = table.scan()
+        response = table.scan(ConsistentRead=True)
         items = response['Items']
         
         return {
