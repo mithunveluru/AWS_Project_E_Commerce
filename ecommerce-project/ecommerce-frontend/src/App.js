@@ -13,11 +13,12 @@ function App() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     checkUser();
     fetchProducts();
-    const interval = setInterval(fetchProducts, 300000);
+    const interval = setInterval(fetchProducts, 60000);
     return () => clearInterval(interval);
   }, []);
 
@@ -49,6 +50,7 @@ function App() {
       await axios.post(`${config.apiGatewayUrl}/track`, {
         productId: productId
       });
+      fetchProducts();
     } catch (err) {
       console.error('Failed to track view:', err);
     }
@@ -78,21 +80,61 @@ function App() {
     setUser(null);
   };
 
+  const addToCart = (product, e) => {
+    e.stopPropagation();
+    setCart(prevCart => {
+      const existing = prevCart.find(item => item.productId === product.productId);
+      if (existing) {
+        return prevCart.map(item =>
+          item.productId === product.productId
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...prevCart, { ...product, quantity: 1 }];
+    });
+    
+    // Show toast notification
+    const toast = document.createElement('div');
+    toast.className = 'add-to-cart-alert';
+    toast.textContent = `✓ ${product.productName} added to cart!`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 2000);
+    
+    trackProductView(product.productId);
+  };
+
+  const getCartCount = () => {
+    return cart.reduce((count, item) => count + item.quantity, 0);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <h1>🛒 Smart E-Commerce Store</h1>
-        <p className="subtitle">Powered by AI-Driven Dynamic Pricing</p>
-        <div className="auth-section">
-          {user ? (
-            <button onClick={handleSignOut} className="auth-button">
-              Sign Out
-            </button>
-          ) : (
-            <button onClick={() => setShowAuth(!showAuth)} className="auth-button">
-              {showAuth ? 'Close' : 'Sign In'}
-            </button>
-          )}
+        <div className="header-content">
+          <h1>🛒 Smart E-Commerce Store</h1>
+          <p className="subtitle">Powered by AI-Driven Dynamic Pricing</p>
+        </div>
+
+        <div className="header-actions">
+          <div className="cart-icon-btn">
+            🛒 Cart
+            {getCartCount() > 0 && (
+              <span className="cart-badge">{getCartCount()}</span>
+            )}
+          </div>
+
+          <div className="auth-section">
+            {user ? (
+              <button onClick={handleSignOut} className="auth-button">
+                Sign Out
+              </button>
+            ) : (
+              <button onClick={() => setShowAuth(!showAuth)} className="auth-button">
+                {showAuth ? 'Close' : 'Sign In'}
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
@@ -142,13 +184,18 @@ function App() {
                   </span>
                 </div>
                 <div className="price-section">
-                  <div className="current-price">₹{product.price}</div>
+                  <div className="current-price">₹{parseFloat(product.price).toFixed(2)}</div>
                   <div className="competitor-price">
-                    Competitor: ₹{product.competitorPrice}
+                    Competitor: ₹{parseFloat(product.competitorPrice).toFixed(2)}
                   </div>
                 </div>
                 <div className="product-footer">
-                  <button className="buy-button">Add to Cart</button>
+                  <button 
+                    className="buy-button"
+                    onClick={(e) => addToCart(product, e)}
+                  >
+                    Add to Cart
+                  </button>
                   <span className="dynamic-label">🤖 AI Optimized</span>
                 </div>
               </div>
@@ -158,7 +205,7 @@ function App() {
       </main>
 
       <footer className="App-footer">
-        <p>Prices update automatically every hour based on demand & competition</p>
+        <p>Prices update automatically every minute based on demand & competition</p>
         <p className="free-tier-badge">✨ 100% AWS Free Tier</p>
       </footer>
     </div>
@@ -166,3 +213,4 @@ function App() {
 }
 
 export default App;
+
