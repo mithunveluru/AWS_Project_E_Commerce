@@ -14,11 +14,7 @@ function Checkout() {
     address: '',
     city: '',
     state: '',
-    pincode: '',
-    cardNumber: '',
-    cardName: '',
-    expiryDate: '',
-    cvv: ''
+    pincode: ''
   });
 
   const [orderPlaced, setOrderPlaced] = useState(false);
@@ -32,11 +28,9 @@ function Checkout() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Simulate order placement
     setOrderPlaced(true);
     clearCart();
     
-    // Redirect to home after 3 seconds
     setTimeout(() => {
       navigate('/');
     }, 3000);
@@ -146,51 +140,6 @@ function Checkout() {
                 </div>
               </div>
 
-              <div className="form-section">
-                <h2>💳 Payment Information</h2>
-                <div className="form-row">
-                  <input
-                    type="text"
-                    name="cardNumber"
-                    placeholder="Card Number"
-                    value={formData.cardNumber}
-                    onChange={handleChange}
-                    maxLength="16"
-                    required
-                  />
-                </div>
-                <div className="form-row">
-                  <input
-                    type="text"
-                    name="cardName"
-                    placeholder="Cardholder Name"
-                    value={formData.cardName}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="form-row">
-                  <input
-                    type="text"
-                    name="expiryDate"
-                    placeholder="MM/YY"
-                    value={formData.expiryDate}
-                    onChange={handleChange}
-                    maxLength="5"
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="cvv"
-                    placeholder="CVV"
-                    value={formData.cvv}
-                    onChange={handleChange}
-                    maxLength="3"
-                    required
-                  />
-                </div>
-              </div>
-
               <button type="submit" className="place-order-btn">
                 Place Order - ₹{total.toFixed(2)}
               </button>
@@ -204,7 +153,7 @@ function Checkout() {
               {cart.map(item => (
                 <div key={item.productId} className="summary-item">
                   <span className="item-name">{item.productName} × {item.quantity}</span>
-                  <span className="item-price">₹{(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="item-price">₹{(parseFloat(item.price) * item.quantity).toFixed(2)}</span>
                 </div>
               ))}
             </div>
@@ -238,3 +187,4 @@ function Checkout() {
 }
 
 export default Checkout;
+

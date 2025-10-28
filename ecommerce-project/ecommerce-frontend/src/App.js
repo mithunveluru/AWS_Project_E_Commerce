@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
+import { CartProvider, useCart } from './CartContext';
+import Cart from './Cart';
+import Checkout from './Checkout';
 import { config } from './config';
 import { signIn, signUp, signOut, getCurrentUser } from './auth';
 import './App.css';
 
-function App() {
+function HomePage() {
+  const { addToCart, getCartCount } = useCart();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,7 +18,6 @@ function App() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     checkUser();
@@ -80,32 +84,16 @@ function App() {
     setUser(null);
   };
 
-  const addToCart = (product, e) => {
+  const handleAddToCart = (product, e) => {
     e.stopPropagation();
-    setCart(prevCart => {
-      const existing = prevCart.find(item => item.productId === product.productId);
-      if (existing) {
-        return prevCart.map(item =>
-          item.productId === product.productId
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prevCart, { ...product, quantity: 1 }];
-    });
+    addToCart(product);
+    trackProductView(product.productId);
     
-    // Show toast notification
     const toast = document.createElement('div');
     toast.className = 'add-to-cart-alert';
     toast.textContent = `✓ ${product.productName} added to cart!`;
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 2000);
-    
-    trackProductView(product.productId);
-  };
-
-  const getCartCount = () => {
-    return cart.reduce((count, item) => count + item.quantity, 0);
   };
 
   return (
@@ -117,12 +105,12 @@ function App() {
         </div>
 
         <div className="header-actions">
-          <div className="cart-icon-btn">
+          <Link to="/cart" className="cart-icon-btn">
             🛒 Cart
             {getCartCount() > 0 && (
               <span className="cart-badge">{getCartCount()}</span>
             )}
-          </div>
+          </Link>
 
           <div className="auth-section">
             {user ? (
@@ -192,7 +180,7 @@ function App() {
                 <div className="product-footer">
                   <button 
                     className="buy-button"
-                    onClick={(e) => addToCart(product, e)}
+                    onClick={(e) => handleAddToCart(product, e)}
                   >
                     Add to Cart
                   </button>
@@ -209,6 +197,20 @@ function App() {
         <p className="free-tier-badge">✨ 100% AWS Free Tier</p>
       </footer>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <CartProvider>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+        </Routes>
+      </CartProvider>
+    </Router>
   );
 }
 

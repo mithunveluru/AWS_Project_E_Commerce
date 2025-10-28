@@ -35,7 +35,7 @@ function Cart() {
               <div key={item.productId} className="cart-item">
                 <div className="item-details">
                   <h3>{item.productName}</h3>
-                  <p className="item-price">₹{item.price.toFixed(2)} each</p>
+                  <p className="item-price">₹{parseFloat(item.price).toFixed(2)} each</p>
                   <span className="ai-badge">🤖 AI Optimized Price</span>
                 </div>
 
@@ -58,7 +58,7 @@ function Cart() {
 
                   <div className="item-total">
                     <p className="total-label">Total</p>
-                    <p className="total-price">₹{(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="total-price">₹{(parseFloat(item.price) * item.quantity).toFixed(2)}</p>
                   </div>
 
                   <button
@@ -118,3 +118,4 @@ function Cart() {
 }
 
 export default Cart;
+
