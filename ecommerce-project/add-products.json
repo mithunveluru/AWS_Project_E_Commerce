@@ -1,0 +1,114 @@
+{
+  "Products": [
+    {
+      "PutRequest": {
+        "Item": {
+          "productId": {"S": "p1"},
+          "productName": {"S": "Wireless Headphones"},
+          "price": {"N": "1500"},
+          "demandScore": {"N": "20"},
+          "competitorPrice": {"N": "1400"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "productId": {"S": "p2"},
+          "productName": {"S": "Smart Watch"},
+          "price": {"N": "2500"},
+          "demandScore": {"N": "35"},
+          "competitorPrice": {"N": "2300"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "productId": {"S": "p3"},
+          "productName": {"S": "Bluetooth Speaker"},
+          "price": {"N": "800"},
+          "demandScore": {"N": "15"},
+          "competitorPrice": {"N": "750"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "productId": {"S": "p4"},
+          "productName": {"S": "Laptop Stand"},
+          "price": {"N": "1200"},
+          "demandScore": {"N": "18"},
+          "competitorPrice": {"N": "1150"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "productId": {"S": "p5"},
+          "productName": {"S": "USB-C Hub"},
+          "price": {"N": "2200"},
+          "demandScore": {"N": "42"},
+          "competitorPrice": {"N": "2100"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "productId": {"S": "p6"},
+          "productName": {"S": "Mechanical Keyboard"},
+          "price": {"N": "3500"},
+          "demandScore": {"N": "28"},
+          "competitorPrice": {"N": "3400"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "productId": {"S": "p7"},
+          "productName": {"S": "Wireless Mouse"},
+          "price": {"N": "900"},
+          "demandScore": {"N": "55"},
+          "competitorPrice": {"N": "850"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "productId": {"S": "p8"},
+          "productName": {"S": "Webcam HD"},
+          "price": {"N": "1800"},
+          "demandScore": {"N": "22"},
+          "competitorPrice": {"N": "1750"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "productId": {"S": "p9"},
+          "productName": {"S": "Phone Case"},
+          "price": {"N": "450"},
+          "demandScore": {"N": "65"},
+          "competitorPrice": {"N": "400"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "productId": {"S": "p10"},
+          "productName": {"S": "Portable SSD 1TB"},
+          "price": {"N": "4500"},
+          "demandScore": {"N": "30"},
+          "competitorPrice": {"N": "4300"}
+        }
+      }
+    }
+  ]
+}
